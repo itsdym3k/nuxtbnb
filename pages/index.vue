@@ -1,7 +1,7 @@
 <script setup>
 import homesData from "~/data/homes.json";
 
-const homes = ref(homesData.slice(0, 3))
+const homes = ref(homesData.slice(0, 3));
 
 useHead({
   title: "Home Page",
@@ -10,15 +10,15 @@ useHead({
 </script>
 
 <template>
-  <div>
-    <div
-      v-for="home in homes"
-      :key="home.objectID"
-      style="float: left; margin: 10px"
-    >
-      <nuxt-link :to="`/home/${home.objectID}`" no-prefetch>
-        <HomeCard :home="home" />
-      </nuxt-link>
+    <div>
+      <div
+        v-for="home in homes"
+        :key="home.objectID"
+        style="float: left; margin: 10px"
+      >
+        <nuxt-link :to="`/home/${home.objectID}`" no-prefetch>
+          <HomeCard :home="home" />
+        </nuxt-link>
+      </div>
     </div>
-  </div>
 </template>
