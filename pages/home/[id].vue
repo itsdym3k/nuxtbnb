@@ -1,10 +1,20 @@
 <script setup>
 import homes from "~/data/homes.json";
+const { $maps } = useNuxtApp();
+const route = useRoute();
+const googleMap = useTemplateRef("map");
 
 const currentHome = ref({});
-const route = useRoute();
 
 currentHome.value = homes.find((home) => home.objectID === route.params.id);
+
+onMounted(() => {
+  return $maps.showMap(
+    googleMap.value,
+    currentHome.value._geoloc.lat,
+    currentHome.value._geoloc.lng
+  );
+});
 
 useHead({
   title: currentHome.value.title,
