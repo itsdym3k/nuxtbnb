@@ -10,5 +10,11 @@ export default defineNuxtConfig({
       },
       charset: 'utf-8',
     },
+  },
+  plugins: ['~/plugins/maps.client.js'],
+  runtimeConfig: {
+    public: {
+      GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
+    }
   }
 })
