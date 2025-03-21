@@ -11,9 +11,11 @@ export default defineNuxtConfig({
       charset: 'utf-8',
     },
   },
-  plugins: ['~/plugins/maps.client.js'],
+  plugins: ['~/plugins/maps.client.js', '~/plugins/dataApi.js'],
   runtimeConfig: {
     public: {
+      ALGOLIA_APP_ID: process.env.ALGOLIA_APP_ID,
+      ALGOLIA_API_KEY: process.env.ALGOLIA_API_KEY,
       GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
     }
   }
