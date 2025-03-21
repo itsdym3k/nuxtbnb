@@ -33,13 +33,12 @@ useHead({
     </div>
     {{ currentHome.title }}
     ${{ currentHome.pricePerNight }} / night <br />
-    <img src="/static/images/marker.svg" width="20" height="20" />{{
-      currentHome.location.address
-    }}
+    <img src="/static/images/marker.svg" width="20" height="20" />
+    {{ currentHome.location.address }}
     {{ currentHome.location.city }} {{ currentHome.location.state }}
     {{ currentHome.location.country }} <br />
     <img src="/static/images/star.svg" width="20" height="20" />
-    currentHome.reviewValue }} {{ currentHome.guests }} guests
+    {{ currentHome.reviewValue }} {{ currentHome.guests }} guests
     {{ currentHome.bedrooms }} bedrooms {{ currentHome.beds }} beds
     {{ currentHome.baths }} baths <br />
     {{ currentHome.description }}
