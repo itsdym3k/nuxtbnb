@@ -1,12 +1,12 @@
 <script setup>
-import homes from "~/data/homes.json";
-const { $maps } = useNuxtApp();
+const { $maps, $dataApi } = useNuxtApp();
 const route = useRoute();
 const googleMap = useTemplateRef("map");
 
-const currentHome = ref({});
-
-currentHome.value = homes.find((home) => home.objectID === route.params.id);
+const { data: currentHome } = await useAsyncData(
+  `home-${route.params.id}`,
+  () => $dataApi.getHome(route.params.id)
+);
 
 onMounted(() => {
   return $maps.showMap(
