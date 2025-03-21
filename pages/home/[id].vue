@@ -31,6 +31,8 @@ useHead({
     <img src="/static/images/star.svg" width="20" height="20" />
     currentHome.reviewValue }} {{ currentHome.guests }} guests
     {{ currentHome.bedrooms }} bedrooms {{ currentHome.beds }} beds
-    {{ currentHome.baths }} baths
+    {{ currentHome.baths }} baths <br />
+    {{ currentHome.description }}
+    <div style="height: 800px; width: 800px" ref="map"></div>
   </div>
 </template>
