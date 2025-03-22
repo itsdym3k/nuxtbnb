@@ -3,9 +3,15 @@ const { $maps, $dataApi } = useNuxtApp();
 const route = useRoute();
 const googleMap = useTemplateRef("map");
 
-const { data: currentHome } = await useAsyncData(
+const { data: currentHome, error } = await useAsyncData(
   `home-${route.params.id}`,
-  () => $dataApi.getHome(route.params.id)
+  async () => {
+    const response = await $dataApi.getHome(route.params.id)
+    if (!response.ok) {
+      return error({statusCode: response.status, message: response.statusText})
+    }
+    return response.json
+  } 
 );
 
 onMounted(() => {
