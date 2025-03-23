@@ -3,16 +3,29 @@ const { $maps, $dataApi } = useNuxtApp();
 const route = useRoute();
 const googleMap = useTemplateRef("map");
 
-const { data: currentHome, error } = await useAsyncData(
+const { data, error } = await useAsyncData(
   `home-${route.params.id}`,
   async () => {
-    const response = await $dataApi.getHome(route.params.id)
-    if (!response.ok) {
-      return error({statusCode: response.status, message: response.statusText})
+    const homeResponse = await $dataApi.getHome(route.params.id);
+    if (!homeResponse.ok) {
+      throw createError({
+        statusCode: homeResponse.status,
+        message: homeResponse.statusText,
+      });
     }
-    return response.json
-  } 
+    const reviewResponse = await $dataApi.getReviewsByHomeId(route.params.id);
+    if (!reviewResponse.ok) {
+      throw createError({
+        statusCode: reviewResponse.status,
+        message: reviewResponse.statusText,
+      });
+    }
+    return { home: homeResponse.json, reviews: reviewResponse.json };
+  }
 );
+
+const currentHome = ref(data.value?.home);
+const reviews = ref(data.value?.reviews.hits);
 
 onMounted(() => {
   return $maps.showMap(
@@ -21,9 +34,9 @@ onMounted(() => {
     currentHome.value._geoloc.lng
   );
 });
-
+console.log(reviews.value);
 useHead({
-  title: currentHome.value.title,
+  title: currentHome.title,
 });
 </script>
 <template>
@@ -49,5 +62,11 @@ useHead({
     {{ currentHome.baths }} baths <br />
     {{ currentHome.description }}
     <div style="height: 800px; width: 800px" ref="map"></div>
+    <div v-for="review in reviews" :key="review.objectID">
+      <img :src="review.reviewer.image"/> <br/>
+      {{ review.reviewer.name }} <br/>
+      {{ review.date }} <br/>
+      {{ review.comment }} <br/>
+    </div>
   </div>
 </template>
