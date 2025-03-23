@@ -6,11 +6,25 @@ export default defineNuxtPlugin((nuxtApp) => {
     "X-Algolia-Application-Id": ALGOLIA_APP_ID
   }
 
-  nuxtApp.provide('dataApi', { getHome })
+  nuxtApp.provide('dataApi', { getHome, getReviewsByHomeId })
 
   async function getHome(homeId) {
     try {
       return unWrap(await fetch(`https://${ALGOLIA_APP_ID}-dsn.algolia.net/1/indexes/homes/${homeId}`, { headers }))
+    } catch (error) {
+      return getErrorResponse(error)
+    }
+  }
+
+  async function getReviewsByHomeId(homeId) {
+    try {
+      return unWrap(await fetch(`https://${ALGOLIA_APP_ID}-dsn.algolia.net/1/indexes/reviews/query`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          filters: `homeId:${homeId}`
+        })
+      }))
     } catch (error) {
       return getErrorResponse(error)
     }
@@ -26,8 +40,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       statusText
     }
   }
-  
-  function getErrorResponse(error){
+
+  function getErrorResponse(error) {
     return {
       ok: false,
       status: 500,
