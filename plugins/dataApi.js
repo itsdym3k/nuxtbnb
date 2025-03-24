@@ -22,7 +22,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         method: 'POST',
         headers,
         body: JSON.stringify({
-          filters: `homeId:${homeId}`
+          filters: `homeId:${homeId}`,
+          hitsPerPage: 6,
         })
       }))
     } catch (error) {
