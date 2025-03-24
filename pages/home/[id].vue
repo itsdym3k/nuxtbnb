@@ -34,7 +34,6 @@ onMounted(() => {
     currentHome.value._geoloc.lng
   );
 });
-console.log(reviews.value);
 useHead({
   title: currentHome.title,
 });
