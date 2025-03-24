@@ -24,6 +24,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         body: JSON.stringify({
           filters: `homeId:${homeId}`,
           hitsPerPage: 6,
+          attributesToHighlight: []
         })
       }))
     } catch (error) {
