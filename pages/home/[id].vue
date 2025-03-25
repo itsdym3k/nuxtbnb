@@ -29,7 +29,15 @@ const { data, error } = await useAsyncData(
         message: reviewResponse.statusText,
       });
     }
-    return { home: homeResponse.json, reviews: reviewResponse.json };
+    const userResponse = await $dataApi.getUserByHomeId(route.params.id);
+    console.log(userResponse);
+    if (!userResponse.ok) {
+      throw createError({
+        statusCode: userResponse.status,
+        message: userResponse.statusText,
+      });
+    }
+    return { home: homeResponse.json, reviews: reviewResponse.json, users: userResponse.json };
   }
 );
 

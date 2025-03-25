@@ -6,7 +6,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     "X-Algolia-Application-Id": ALGOLIA_APP_ID
   }
 
-  nuxtApp.provide('dataApi', { getHome, getReviewsByHomeId })
+  nuxtApp.provide('dataApi', { getHome, getReviewsByHomeId, getUserByHomeId })
 
   async function getHome(homeId) {
     try {
@@ -24,6 +24,20 @@ export default defineNuxtPlugin((nuxtApp) => {
         body: JSON.stringify({
           filters: `homeId:${homeId}`,
           hitsPerPage: 6,
+          attributesToHighlight: []
+        })
+      }))
+    } catch (error) {
+      return getErrorResponse(error)
+    }
+  }
+  async function getUserByHomeId(homeId) {
+    try {
+      return unWrap(await fetch(`https://${ALGOLIA_APP_ID}-dsn.algolia.net/1/indexes/users/query`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          filters: `homeId:${homeId}`,
           attributesToHighlight: []
         })
       }))
