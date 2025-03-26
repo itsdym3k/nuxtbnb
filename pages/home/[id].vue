@@ -30,7 +30,6 @@ const { data, error } = await useAsyncData(
       });
     }
     const userResponse = await $dataApi.getUserByHomeId(route.params.id);
-    console.log(userResponse);
     if (!userResponse.ok) {
       throw createError({
         statusCode: userResponse.status,
@@ -43,6 +42,7 @@ const { data, error } = await useAsyncData(
 
 const currentHome = ref(data.value?.home);
 const reviews = ref(data.value?.reviews.hits);
+const user = ref(data.value?.users.hits[0]);
 
 onMounted(() => {
   return $maps.showMap(
@@ -84,5 +84,10 @@ useHead({
       {{ formatDate(review.date) }} <br/>
       <short-text :text="review.comment" target="150" /> <br/>
     </div>
+    <img :src="user.image"/><br/>
+    {{ user.name }} <br/>
+    {{ formatDate(user.joined) }} <br/>
+    {{ user.reviewCount }} <br/>
+    {{ user.description }} <br/>
   </div>
 </template>

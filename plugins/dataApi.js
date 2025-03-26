@@ -31,6 +31,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       return getErrorResponse(error)
     }
   }
+
   async function getUserByHomeId(homeId) {
     try {
       return unWrap(await fetch(`https://${ALGOLIA_APP_ID}-dsn.algolia.net/1/indexes/users/query`, {
