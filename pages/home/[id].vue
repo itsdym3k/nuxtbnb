@@ -15,28 +15,19 @@ const formatDate= (dateStr) => {
 const { data, error } = await useAsyncData(
   `home-${route.params.id}`,
   async () => {
-    const homeResponse = await $dataApi.getHome(route.params.id);
-    if (!homeResponse.ok) {
+    const responses = await Promise.all([
+      $dataApi.getHome(route.params.id),
+      $dataApi.getReviewsByHomeId(route.params.id),
+      $dataApi.getUserByHomeId(route.params.id),
+    ]);
+    const badResponse = responses.find((response) => !response.ok);
+    if (badResponse) {
       throw createError({
-        statusCode: homeResponse.status,
-        message: homeResponse.statusText,
+        statusCode: badResponse.status,
+        message: badResponse.statusText,
       });
     }
-    const reviewResponse = await $dataApi.getReviewsByHomeId(route.params.id);
-    if (!reviewResponse.ok) {
-      throw createError({
-        statusCode: reviewResponse.status,
-        message: reviewResponse.statusText,
-      });
-    }
-    const userResponse = await $dataApi.getUserByHomeId(route.params.id);
-    if (!userResponse.ok) {
-      throw createError({
-        statusCode: userResponse.status,
-        message: userResponse.statusText,
-      });
-    }
-    return { home: homeResponse.json, reviews: reviewResponse.json, users: userResponse.json };
+    return { home: responses[0].json, reviews: responses[1].json, users: responses[2].json };
   }
 );
 
